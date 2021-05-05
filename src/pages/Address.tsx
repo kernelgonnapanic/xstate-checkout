@@ -1,7 +1,8 @@
+import Container from "../templates/Container";
 
 
 const Address = () => (
-  <div>Address</div>
+  <Container>Address</Container>
 )
 
 export default Address;

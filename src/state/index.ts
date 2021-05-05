@@ -1,9 +1,11 @@
-import {createMachine} from "xstate";
+import {assign, createMachine} from "xstate";
 
-interface Product {
+export interface Product {
+  id: string;
   name: string; // TODO: max 20 znaków
   price: number; // TODO: + waluta? + czy da się wymusić typem brak ujemnych + z centami
   withShipping: boolean;
+  quantity: number;
 }
 
 type Countries = 'PL' | 'US';
@@ -38,15 +40,48 @@ interface CheckoutState {
 
 const checkoutMachine = createMachine<CheckoutState>({
   id: "checkout",
-  initial: "card",
+  initial: "cart",
   context: {
-    cart: [],
+    cart: [{
+      id: '1',
+      name: 'Testowy produkt',
+      price: 3000,
+      quantity: 2,
+      withShipping: false,
+    }, {
+      id: '2',
+      name: 'Buty',
+      price: 6000,
+      quantity: 1,
+      withShipping: true,
+    }],
     address: null,
     shippmentMethod: null,
     paymentMethod: null,
   },
   states: {
-    cart: {},
+    cart: {
+      on: {
+        ADD_PRODUCT: {
+          actions: assign((context, event) => {
+            const updatedProduct = context.cart.find(product => product.id === event.productId);
+            
+            return {
+              ...context,
+            }
+          }),
+        }, 
+        REMOVE_PRODUCT: {
+          actions: assign((context, event) => { //TODO: type it in a better way
+            const updatedProduct = context.cart.find(product => product.id === event.productId);
+            console.log(updatedProduct);
+            return {
+              ...context
+            }
+          }),
+        }
+      }
+    },
     adressed: {},
     shippingSelected: {},
     shippingSkipped: {},

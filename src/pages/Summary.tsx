@@ -1,7 +1,7 @@
-
+import Container from "../templates/Container";
 
 const Summary = () => (
-  <div>Summary</div>
+  <Container>Summary</Container>
 )
 
 export default Summary;

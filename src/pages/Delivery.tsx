@@ -1,7 +1,8 @@
+import Container from "../templates/Container";
 
 
 const Delivery = () => (
-  <div>Delivery</div>
+  <Container>Delivery</Container>
 )
 
 export default Delivery;

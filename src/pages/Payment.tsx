@@ -1,7 +1,8 @@
+import Container from "../templates/Container";
 
 
 const Payment = () => (
-  <div>Payment</div>
+  <Container>Payment</Container>
 )
 
 export default Payment;
