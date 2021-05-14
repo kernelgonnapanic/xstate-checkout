@@ -31,7 +31,7 @@ const shippmentMethods : ShippmentMethod[] = [{
 
 type PaymentMethod = 'creditCard' | 'GooglePay' | 'test';
 
-interface CheckoutState {
+export interface CheckoutState {
   cart: Product[];
   address: Address | null;
   shippmentMethod: ShippmentMethod | null;
@@ -63,20 +63,27 @@ const checkoutMachine = createMachine<CheckoutState>({
     cart: {
       on: {
         ADD_PRODUCT: {
-          actions: assign((context, event) => {
-            const updatedProduct = context.cart.find(product => product.id === event.productId);
-            
-            return {
-              ...context,
+          actions: assign({
+            cart: (context, event) => {              
+
+              return context.cart.map(product => {
+                if (product.id === event.productId) {
+                  return {...product, quantity: product.quantity + 1}
+                }
+                return product
+              });
             }
           }),
         }, 
         REMOVE_PRODUCT: {
-          actions: assign((context, event) => { //TODO: type it in a better way
-            const updatedProduct = context.cart.find(product => product.id === event.productId);
-            console.log(updatedProduct);
-            return {
-              ...context
+          actions: assign({
+            cart: (context, event) => {
+              return context.cart.map(product => {
+                if (product.id === event.productId) {
+                  return {...product, quantity: product.quantity - 1}
+                }
+                return product
+              });
             }
           }),
         }
