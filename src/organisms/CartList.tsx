@@ -10,6 +10,12 @@ const List = styled.section`
   border-bottom: 2px solid rgb(74, 42, 28);
 `;
 
+const Info = styled.section`
+  display: flex;
+  height: 200px;
+  justify-content: center;
+`
+
 const getSum = (state: typeof checkoutMachine) => 
   state.context.cart.reduce((sum, elem) => sum + elem.price * elem.quantity, 0) 
 
@@ -17,21 +23,26 @@ const CartList = () => {
   const [current, send, service] = useMachine(checkoutMachine);
   const sum = useSelector(service, getSum);
   const cart = current.context.cart;
+
+  if (cart.length === 0) {
+    return <Info>Twój koszyk jest pusty</Info>
+  }
+
   return (
     <>
-    <List>
-    {cart.map((elem: Product) => 
-      <ListElement
-        key={elem.id} 
-        product={elem} 
-        onRemove={() => send('REMOVE_PRODUCT', {productId: elem.id})} 
-        onAdd={()=> send('ADD_PRODUCT', {productId: elem.id})}
-      />)}
-    </List>
-    <Row>
-      <Name>Suma:</Name>
-      <Cell>{displayPrice(sum)}</Cell>
-    </Row>
+      <List>
+      {cart.map((elem: Product) => 
+        <ListElement
+          key={elem.id} 
+          product={elem} 
+          onRemove={() => send('REMOVE_PRODUCT', {productId: elem.id})} 
+          onAdd={()=> send('ADD_PRODUCT', {productId: elem.id})}
+        />)}
+      </List>
+      <Row>
+        <Name>Suma:</Name>
+        <Cell>{displayPrice(sum)}</Cell>
+      </Row>
     </>
   )
 };

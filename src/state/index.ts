@@ -78,12 +78,11 @@ const checkoutMachine = createMachine<CheckoutState>({
         REMOVE_PRODUCT: {
           actions: assign({
             cart: (context, event) => {
-              return context.cart.map(product => {
-                if (product.id === event.productId) {
-                  return {...product, quantity: product.quantity - 1}
-                }
-                return product
-              });
+              return context.cart
+              .map(product => product.id === event.productId ? 
+                {...product, quantity: product.quantity - 1} : 
+                product)
+              .filter(product => product.quantity !== 0);
             }
           }),
         }
