@@ -74,8 +74,7 @@ const checkoutMachine = createMachine<CheckoutState, CheckoutEvents>({
                 name: `${prodToAdd.name} - ${prodToAdd.manufacturer}`,
                 price: prodToAdd.price,
               };
-              context.cart = [newCartItem, ...context.cart];
-              return context.cart;
+              return [newCartItem, ...context.cart];
             },
           }),
         },
