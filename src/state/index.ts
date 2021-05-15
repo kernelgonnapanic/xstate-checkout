@@ -1,5 +1,7 @@
 import { assign, createMachine } from "xstate";
 import { findProductById } from "../mocks/getProducts";
+import { availableDiscounts, Discount } from "../types/Discount";
+import { shippmentMethods, ShippmentMethod } from "../types/ShippmentMethod";
 
 export interface CartItem {
   id: string;
@@ -8,53 +10,12 @@ export interface CartItem {
   quantity: number;
 }
 
-type Countries = "PL" | "US";
-
 interface Address {
   street: string;
   city: string;
-  country: Countries;
 }
-
-interface ShippmentMethod {
-  type: string;
-  price: number;
-  name: string;
-  freeFrom: number | null;
-}
-
-export const shippmentMethods: ShippmentMethod[] = [
-  {
-    type: "expressDelivery",
-    name: "Dostawa ekspresowa (1-2 dni)",
-    price: 2500,
-    freeFrom: null,
-  },
-  {
-    type: "standardDelivery",
-    name: "Dostawa standardowa (3-4 dni)",
-    price: 1000,
-    freeFrom: 20000,
-  },
-];
-
-export const availableDiscounts: Discount[] = [
-  {
-    code: "Maj20",
-    percentage: 20,
-  },
-  {
-    code: "WielkaPromocja",
-    percentage: 40,
-  },
-];
 
 type PaymentMethod = "creditCard" | "GooglePay" | "test";
-
-interface Discount {
-  code: string;
-  percentage: number;
-}
 
 export interface CheckoutState {
   cart: CartItem[];
@@ -69,7 +30,9 @@ export type CheckoutEvents =
   | { type: "REDUCE_QUANTITY"; productId: string }
   | { type: "ADD_PRODUCT"; productId: string }
   | { type: "REMOVE_PRODUCT"; productId: string }
-  | { type: "ADD_DISCOUNT"; code: string };
+  | { type: "ADD_DISCOUNT"; code: string }
+  | { type: "CHOOSE_SHIPPMENT"; methodType: ShippmentMethod["type"] }
+  | { type: "NEXT" };
 
 const checkoutMachine = createMachine<CheckoutState, CheckoutEvents>({
   id: "checkout",
@@ -141,13 +104,6 @@ const checkoutMachine = createMachine<CheckoutState, CheckoutEvents>({
         ADD_DISCOUNT: {
           actions: assign({
             appliedDiscount: (context, event) => {
-              console.log(
-                "Add",
-                event,
-                availableDiscounts.find(
-                  (discount) => discount.code === event.code
-                ) ?? null
-              );
               return (
                 availableDiscounts.find(
                   (discount) => discount.code === event.code
@@ -156,8 +112,21 @@ const checkoutMachine = createMachine<CheckoutState, CheckoutEvents>({
             },
           }),
         },
+        CHOOSE_SHIPPMENT: {
+          actions: assign({
+            shippmentMethod: (context, event) => {
+              return (
+                shippmentMethods.find(
+                  (method) => method.type === event.methodType
+                ) ?? null
+              );
+            },
+          }),
+        },
+        NEXT: { target: "address" },
       },
     },
+    address: {},
     completed: {},
   },
 });

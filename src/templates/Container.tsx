@@ -9,8 +9,10 @@ const MainContainer = styled.main`
   padding: 20px;
 `;
 
-const Container = ({ children }: { children: React.ReactNode }) => (
-  <MainContainer>{children}</MainContainer>
-);
+const Container = ({
+  children,
+}: {
+  children: React.ReactNode;
+}): JSX.Element => <MainContainer>{children}</MainContainer>;
 
 export default Container;

@@ -1,17 +1,20 @@
-import * as React from "react";
 import { useService } from "@xstate/react";
 import styled from "styled-components";
 import { useContext } from "react";
-import { Product } from "../../../types/Product";
-import addToCartImage from "../../../assets/icons/add-to-cart.png";
-import removeFromCartImage from "../../../assets/icons/remove-from-cart.png";
-import { MachineContext } from "../../../MachineContext";
-import Image from "../../../atoms/Image";
+import { Product } from "../types/Product";
+import addToCartImage from "../assets/icons/add-to-cart.png";
+import removeFromCartImage from "../assets/icons/remove-from-cart.png";
+import { MachineContext } from "../MachineContext";
+import Image from "../atoms/Image";
+import { displayPrice } from "../utils/money";
 
 type ProductElementProps = {
   product: Product;
 };
-export const ProductElement = ({ product }: ProductElementProps) => {
+
+export const ProductElement = ({
+  product,
+}: ProductElementProps): JSX.Element => {
   const machine = useContext(MachineContext);
   const [current, send] = useService(machine);
   const { cart } = current.context;
@@ -31,13 +34,13 @@ export const ProductElement = ({ product }: ProductElementProps) => {
       <NameContainer>
         {product.name} - {product.manufacturer}
       </NameContainer>
-      <PriceContainer>{product.price} zł</PriceContainer>
+      <PriceContainer>{displayPrice(product.price)}</PriceContainer>
       {inCart ? (
-        <Button onClick={() => removeFromCart()}>
+        <Button onClick={removeFromCart}>
           <Image alt="removeFromCart" src={removeFromCartImage} />
         </Button>
       ) : (
-        <Button onClick={() => addToCart()}>
+        <Button onClick={addToCart}>
           <Image alt="addToCart" src={addToCartImage} />
         </Button>
       )}

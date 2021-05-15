@@ -3,9 +3,11 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 import { Cell, Name, Row } from "../atoms/Row";
 import ListElement from "../molecules/ListElement";
-import checkoutMachine, { CartItem } from "../state";
 import { displayPrice } from "../utils/money";
+
+import { getDiscounts, getSum } from "../state/selectors";
 import { MachineContext } from "../MachineContext";
+import { CartItem } from "../state";
 
 const List = styled.section`
   padding-bottom: 10px;
@@ -20,19 +22,7 @@ const Info = styled.section`
   justify-content: center;
 `;
 
-const getSum = (state: typeof checkoutMachine) =>
-  state.context.cart.reduce((sum, elem) => sum + elem.price * elem.quantity, 0);
-
-const getDiscounts = (state: typeof checkoutMachine) => {
-  const discount = state.context.appliedDiscount?.percentage ?? 0;
-  const sum = state.context.cart.reduce(
-    (sum, elem) => sum + elem.price * elem.quantity,
-    0
-  );
-  return (sum * discount) / 100;
-};
-
-const CartList = () => {
+const CartList = (): JSX.Element => {
   const machine = useContext(MachineContext);
   const [current, send] = useService(machine);
   const sum = useSelector(machine, getSum);

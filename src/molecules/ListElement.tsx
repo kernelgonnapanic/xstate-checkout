@@ -25,7 +25,11 @@ const Button = styled.button`
   }
 `;
 
-const ListElement = ({ product, onRemove, onAdd }: ListElementProps) => {
+const ListElement = ({
+  product,
+  onRemove,
+  onAdd,
+}: ListElementProps): JSX.Element => {
   return (
     <Row>
       <Name>{product.name}</Name>

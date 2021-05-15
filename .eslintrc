@@ -42,7 +42,9 @@
     "react/default-props-match-prop-types": [
       "error",
       { "allowRequiredDefaults": true }
-    ]
+    ],
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-uses-react": "off"
   },
   "env": {
     "node": true,

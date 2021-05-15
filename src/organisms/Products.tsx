@@ -1,8 +1,7 @@
-import * as React from "react";
-import { getProducts } from "../../../mocks/getProducts";
-import { ProductElement } from "./ProductElement";
+import { getProducts } from "../mocks/getProducts";
+import { ProductElement } from "../molecules/ProductElement";
 
-export const Products = () => {
+export const Products = (): JSX.Element => {
   const products = getProducts();
 
   return (
