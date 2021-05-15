@@ -1,3 +1,4 @@
+import React from "react";
 import ListHeader from "../atoms/ListHeader";
 import CartList from "../organisms/CartList";
 import Delivery from "../organisms/Delivery";
@@ -13,6 +14,6 @@ const Cart = () => (
     <Delivery />
     <Sum />
   </Container>
-)
+);
 
 export default Cart;
