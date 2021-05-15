@@ -22,7 +22,7 @@ const Info = styled.section`
   justify-content: center;
 `;
 
-const CartList = () => {
+const CartList = (): JSX.Element => {
   const machine = useContext(MachineContext);
   const [current, send] = useService(machine);
   const sum = useSelector(machine, getSum);

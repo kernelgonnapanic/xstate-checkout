@@ -10,8 +10,8 @@ const Summary = styled.h2`
   border-bottom: 2px solid rgb(74, 42, 28);
   display: flex;
 `;
-  
-const Sum = () => {
+
+const Sum = (): JSX.Element => {
   const machine = useContext(MachineContext);
   const total = useSelector(machine, getTotal);
 
@@ -20,7 +20,7 @@ const Sum = () => {
       <Name>Suma: </Name>
       <Cell>{displayPrice(total)}</Cell>
     </Summary>
-  )
-}
+  );
+};
 
 export default Sum;

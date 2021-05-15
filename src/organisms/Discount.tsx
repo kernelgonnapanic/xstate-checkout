@@ -2,7 +2,7 @@ import { useService } from "@xstate/react";
 import React, { ChangeEvent, useContext, useState } from "react";
 import styled from "styled-components";
 import { MachineContext } from "../MachineContext";
-import { availableDiscounts } from "../state";
+import { availableDiscounts } from "../types/Discount";
 
 const DiscountSection = styled.div`
   margin-top: 30px;
@@ -23,9 +23,9 @@ const ErrorMessage = styled.div`
   background-color: #fce8e8;
 `;
 
-const Discount = () => {
+const Discount = (): JSX.Element => {
   const machine = useContext(MachineContext);
-  const [current, send] = useService(machine);
+  const [, send] = useService(machine);
   const [error, setError] = useState<string | null>(null);
 
   const [code, setCode] = useState("");

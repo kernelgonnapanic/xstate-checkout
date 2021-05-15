@@ -10,16 +10,16 @@ import Discount from "../organisms/Discount";
 import Sum from "../organisms/Sum";
 import Container from "../templates/Container";
 
-const Cart = () => {
+const Cart = (): JSX.Element => {
   const machine = useContext(MachineContext);
-  const [current, send] = useService(machine);
+  const [, send] = useService(machine);
 
   const handleForwardNavigation = () => {
-    send('NEXT');
+    send("NEXT");
   };
 
   const handleNextNavigation = () => {
-    send('NEXT');
+    send("NEXT");
   };
 
   return (
@@ -30,15 +30,19 @@ const Cart = () => {
       <Delivery />
       <Sum />
       <Row>
-        <Name>      
-          <NavigationButton to="/" onClick={handleForwardNavigation}>{'<<'} Lista produktów </NavigationButton>
+        <Name>
+          <NavigationButton to="/" onClick={handleForwardNavigation}>
+            {"<<"} Lista produktów{" "}
+          </NavigationButton>
         </Name>
-        <Cell>      
-          <NavigationButton to="/address" onClick={handleNextNavigation}>Adres {'>>'}</NavigationButton>
+        <Cell>
+          <NavigationButton to="/address" onClick={handleNextNavigation}>
+            Adres {">>"}
+          </NavigationButton>
         </Cell>
       </Row>
     </Container>
   );
-}
+};
 
 export default Cart;

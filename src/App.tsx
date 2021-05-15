@@ -7,11 +7,11 @@ import Address from "./pages/Address";
 import Cart from "./pages/Cart";
 import Payment from "./pages/Payment";
 import Summary from "./pages/Summary";
-import { Home } from "./pages/Home/Home";
+import { Home } from "./pages/Home";
 import checkoutMachine from "./state";
 
-function App() {
-  const [state, send, service] = useMachine(checkoutMachine);
+function App(): JSX.Element {
+  const [, , service] = useMachine(checkoutMachine);
   return (
     <MachineContext.Provider value={service}>
       <Router>
