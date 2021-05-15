@@ -40,7 +40,7 @@ const checkoutMachine = createMachine<CheckoutState, CheckoutEvents>({
   context: {
     cart: [],
     address: null,
-    shippmentMethod: null,
+    shippmentMethod: shippmentMethods[0],
     paymentMethod: null,
     appliedDiscount: null,
   },
