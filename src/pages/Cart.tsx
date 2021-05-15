@@ -1,19 +1,44 @@
-import React from "react";
+import { useService } from "@xstate/react";
+import { useContext } from "react";
+import { MachineContext } from "../MachineContext";
 import ListHeader from "../atoms/ListHeader";
+import NavigationButton from "../atoms/NavigationButton";
+import { Cell, Name, Row } from "../atoms/Row";
 import CartList from "../organisms/CartList";
 import Delivery from "../organisms/Delivery";
 import Discount from "../organisms/Discount";
 import Sum from "../organisms/Sum";
 import Container from "../templates/Container";
 
-const Cart = () => (
-  <Container>
-    <ListHeader>Koszyk:</ListHeader>
-    <CartList />
-    <Discount />
-    <Delivery />
-    <Sum />
-  </Container>
-);
+const Cart = () => {
+  const machine = useContext(MachineContext);
+  const [current, send] = useService(machine);
+
+  const handleForwardNavigation = () => {
+    send('NEXT');
+  };
+
+  const handleNextNavigation = () => {
+    send('NEXT');
+  };
+
+  return (
+    <Container>
+      <ListHeader>Koszyk:</ListHeader>
+      <CartList />
+      <Discount />
+      <Delivery />
+      <Sum />
+      <Row>
+        <Name>      
+          <NavigationButton to="/" onClick={handleForwardNavigation}>{'<<'} Lista produktów </NavigationButton>
+        </Name>
+        <Cell>      
+          <NavigationButton to="/address" onClick={handleNextNavigation}>Adres {'>>'}</NavigationButton>
+        </Cell>
+      </Row>
+    </Container>
+  );
+}
 
 export default Cart;

@@ -67,8 +67,8 @@ export type CheckoutEvents =
   | { type: "ADD_PRODUCT"; productId: string }
   | { type: "REMOVE_PRODUCT"; productId: string }
   | { type: "ADD_DISCOUNT"; code: string }
-  | {type: "CHOOSE_SHIPPMENT"; methodType: ShippmentMethod["type"]};
-
+  | {type: "CHOOSE_SHIPPMENT"; methodType: ShippmentMethod["type"]}
+  | {type: "NEXT"};
 
 const checkoutMachine = createMachine<CheckoutState, CheckoutEvents>({
   id: "checkout",
@@ -150,11 +150,13 @@ const checkoutMachine = createMachine<CheckoutState, CheckoutEvents>({
               return shippmentMethods.find(method => method.type === event.methodType) ?? null
             }
           })
-        }
+        },
+        NEXT: {target: 'address'}
       }
     },
-    completed: {},
-  },
+    address: {},
+    completed: {}
+  }
 });
 
 export default checkoutMachine;
