@@ -20,23 +20,20 @@ interface ShippmentMethod {
   type: string;
   price: number;
   name: string;
-  freeFrom: number | null;
+  freeFrom: number;
 }
 
-export const shippmentMethods: ShippmentMethod[] = [
-  {
-    type: "expressDelivery",
-    name: "Dostawa ekspresowa (1-2 dni)",
-    price: 2500,
-    freeFrom: null,
-  },
-  {
-    type: "standardDelivery",
-    name: "Dostawa standardowa (3-4 dni)",
-    price: 1000,
-    freeFrom: 20000,
-  },
-];
+export const shippmentMethods : ShippmentMethod[] = [{
+  type: 'expressDelivery',
+  name: 'Dostawa ekspresowa (1-2 dni)',
+  price: 2500,
+  freeFrom: Infinity,
+}, {
+  type: 'standardDelivery',
+  name: 'Dostawa standardowa (3-4 dni)',
+  price: 1000,
+  freeFrom: 20000,
+}];
 
 export const availableDiscounts: Discount[] = [
   {
@@ -69,7 +66,9 @@ export type CheckoutEvents =
   | { type: "REDUCE_QUANTITY"; productId: string }
   | { type: "ADD_PRODUCT"; productId: string }
   | { type: "REMOVE_PRODUCT"; productId: string }
-  | { type: "ADD_DISCOUNT"; code: string };
+  | { type: "ADD_DISCOUNT"; code: string }
+  | {type: "CHOOSE_SHIPPMENT"; methodType: ShippmentMethod["type"]};
+
 
 const checkoutMachine = createMachine<CheckoutState, CheckoutEvents>({
   id: "checkout",
@@ -141,22 +140,18 @@ const checkoutMachine = createMachine<CheckoutState, CheckoutEvents>({
         ADD_DISCOUNT: {
           actions: assign({
             appliedDiscount: (context, event) => {
-              console.log(
-                "Add",
-                event,
-                availableDiscounts.find(
-                  (discount) => discount.code === event.code
-                ) ?? null
-              );
-              return (
-                availableDiscounts.find(
-                  (discount) => discount.code === event.code
-                ) ?? null
-              );
-            },
-          }),
+              return availableDiscounts.find(discount => discount.code === event.code) ?? null
+            }
+          })
         },
-      },
+        CHOOSE_SHIPPMENT: {
+          actions: assign({
+            shippmentMethod: (context, event) => {
+              return shippmentMethods.find(method => method.type === event.methodType) ?? null
+            }
+          })
+        }
+      }
     },
     completed: {},
   },
