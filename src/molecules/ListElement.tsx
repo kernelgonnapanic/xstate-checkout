@@ -1,10 +1,11 @@
-import { Product } from "../state";
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
+import { CartItem } from "../state";
 import { displayPrice } from "../utils/money";
 import { Cell, Name, Row } from "../atoms/Row";
 
 interface ListElementProps {
-  product: Product;
+  product: CartItem;
   onRemove: () => void;
   onAdd: () => void;
 }
@@ -22,21 +23,23 @@ const Button = styled.button`
     color: gray;
     border-color: gray;
   }
-`
+`;
 
-const ListElement = ({product, onRemove, onAdd}: ListElementProps) => {
+const ListElement = ({ product, onRemove, onAdd }: ListElementProps) => {
   return (
     <Row>
       <Name>{product.name}</Name>
       <Cell>{displayPrice(product.price)}</Cell>
       <Cell>
-        <Button disabled={product.quantity < 1} onClick={onRemove}>-1</Button>
+        <Button disabled={product.quantity < 1} onClick={onRemove}>
+          -1
+        </Button>
         {product.quantity}
         <Button onClick={onAdd}>+1</Button>
       </Cell>
       <Cell>{displayPrice(product.price * product.quantity)}</Cell>
     </Row>
-  )
+  );
 };
 
 export default ListElement;

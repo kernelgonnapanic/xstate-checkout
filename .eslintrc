@@ -1,0 +1,51 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "extends": [
+    "airbnb-typescript",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": ["@typescript-eslint", "react", "prettier"],
+  "rules": {
+    "@typescript-eslint/ban-ts-comment": "off",
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": [
+          "**/*.test.ts",
+          "**/*.test.tsx",
+          "**/*.spec.ts"
+        ]
+      }
+    ],
+    "import/no-unused-modules": [1, { "unusedExports": true }],
+    "prettier/prettier": "error",
+    "import/prefer-default-export": 0,
+    "no-underscore-dangle": 0,
+    "no-cond-assign": ["error", "except-parens"],
+    "@typescript-eslint/interface-name-prefix": 0,
+    "@typescript-eslint/no-use-before-define": 0,
+    "react/jsx-one-expression-per-line": 0,
+    "@typescript-eslint/no-this-alias": 0,
+    "react/destructuring-assignment": 0,
+    "react/require-default-props": 0,
+    "react/jsx-indent": 0,
+    "react/jsx-curly-newline": 0,
+    "react/jsx-closing-tag-location": 0,
+    "react/prop-types": 0,
+    "react/jsx-props-no-spreading": 0,
+    "react/default-props-match-prop-types": [
+      "error",
+      { "allowRequiredDefaults": true }
+    ]
+  },
+  "env": {
+    "node": true,
+    "jest": true
+  }
+}

@@ -1,29 +1,24 @@
+import React from "react";
 import { useMachine } from "@xstate/react";
-import { createContext } from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from "react-router-dom";
-import { Interpreter } from "xstate";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { MachineContext } from "./MachineContext";
+
 import Address from "./pages/Address";
 import Cart from "./pages/Cart";
 import Payment from "./pages/Payment";
 import Summary from "./pages/Summary";
-import checkoutMachine, { CheckoutState, CheckoutEvents } from "./state";
-
-export const MachineContext = createContext<Interpreter<CheckoutState, any, CheckoutEvents, {
-  value: any;
-  context: CheckoutState;
-}>>(null!);
+import { Home } from "./pages/Home/Home";
+import checkoutMachine from "./state";
 
 function App() {
   const [state, send, service] = useMachine(checkoutMachine);
-
   return (
     <MachineContext.Provider value={service}>
       <Router>
         <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
           <Route path="/cart">
             <Cart />
           </Route>
@@ -39,7 +34,6 @@ function App() {
         </Switch>
       </Router>
     </MachineContext.Provider>
-   
   );
 }
 
