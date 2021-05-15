@@ -1,28 +1,13 @@
 import { Product } from "../state";
 import styled from 'styled-components';
+import { displayPrice } from "../utils/money";
+import { Cell, Name, Row } from "../atoms/Row";
 
 interface ListElementProps {
   product: Product;
   onRemove: () => void;
   onAdd: () => void;
 }
-
-const Row = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin: 10px 0;
-`
-
-const Name = styled.div`
-  flex: 1;
-`
-
-const Cell = styled.div`
-  flex-basis: 60px;
-  justify-content: center;
-  align-items: center;
-  display: flex;
-`
 
 const Button = styled.button`
   border-radius: 50%;
@@ -32,11 +17,12 @@ const Button = styled.button`
   height: 25px;
   background-color: transparent;
   margin: 0 10px;
-`
 
-const displayPrice = (price: number) => {
-  return `${price / 100}zł`;
-}
+  &:disabled {
+    color: gray;
+    border-color: gray;
+  }
+`
 
 const ListElement = ({product, onRemove, onAdd}: ListElementProps) => {
   return (
@@ -44,7 +30,7 @@ const ListElement = ({product, onRemove, onAdd}: ListElementProps) => {
       <Name>{product.name}</Name>
       <Cell>{displayPrice(product.price)}</Cell>
       <Cell>
-        <Button onClick={onRemove}>-1</Button>
+        <Button disabled={product.quantity < 1} onClick={onRemove}>-1</Button>
         {product.quantity}
         <Button onClick={onAdd}>+1</Button>
       </Cell>

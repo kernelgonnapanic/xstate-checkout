@@ -2,8 +2,8 @@ import {assign, createMachine} from "xstate";
 
 export interface Product {
   id: string;
-  name: string; // TODO: max 20 znaków
-  price: number; // TODO: + waluta? + czy da się wymusić typem brak ujemnych + z centami
+  name: string;
+  price: number;
   withShipping: boolean;
   quantity: number;
 }
@@ -17,28 +17,53 @@ interface Address {
 }
 
 interface ShippmentMethod {
-  type: string; // czy mocniej?
-  enabledFor: Countries[]
+  type: string;
+  price: number;
+  name: string;
+  freeFrom: number | null;
 }
 
-const shippmentMethods : ShippmentMethod[] = [{
+export const shippmentMethods : ShippmentMethod[] = [{
   type: 'expressDelivery',
-  enabledFor: ['PL']
+  name: 'Dostawa ekspresowa (1-2 dni)',
+  price: 2500,
+  freeFrom: null,
 }, {
   type: 'standardDelivery',
-  enabledFor: ['PL', 'US']
+  name: 'Dostawa standardowa (3-4 dni)',
+  price: 1000,
+  freeFrom: 20000,
 }];
+
+export const availableDiscounts: Discount[] = [{
+  code: 'Maj20',
+  percentage: 20,
+}, {
+  code: 'WielkaPromocja',
+  percentage: 40,
+}]
 
 type PaymentMethod = 'creditCard' | 'GooglePay' | 'test';
 
-interface CheckoutState {
+interface Discount {
+  code: string;
+  percentage: number;
+}
+
+export interface CheckoutState {
   cart: Product[];
   address: Address | null;
   shippmentMethod: ShippmentMethod | null;
   paymentMethod: PaymentMethod | null;
+  appliedDiscount: Discount | null;
 }
 
-const checkoutMachine = createMachine<CheckoutState>({
+export type CheckoutEvents =
+  | {type: 'ADD_PRODUCT'; productId: string}
+  | {type: 'REMOVE_PRODUCT'; productId: string}
+  | {type: 'ADD_DISCOUNT'; code: string}
+
+const checkoutMachine = createMachine<CheckoutState, CheckoutEvents>({
   id: "checkout",
   initial: "cart",
   context: {
@@ -58,35 +83,44 @@ const checkoutMachine = createMachine<CheckoutState>({
     address: null,
     shippmentMethod: null,
     paymentMethod: null,
+    appliedDiscount: null
   },
   states: {
     cart: {
       on: {
         ADD_PRODUCT: {
-          actions: assign((context, event) => {
-            const updatedProduct = context.cart.find(product => product.id === event.productId);
-            
-            return {
-              ...context,
+          actions: assign({
+            cart: (context, event) => {              
+              return context.cart.map(product => {
+                if (product.id === event.productId) {
+                  return {...product, quantity: product.quantity + 1}
+                }
+                return product
+              });
             }
           }),
         }, 
         REMOVE_PRODUCT: {
-          actions: assign((context, event) => { //TODO: type it in a better way
-            const updatedProduct = context.cart.find(product => product.id === event.productId);
-            console.log(updatedProduct);
-            return {
-              ...context
+          actions: assign({
+            cart: (context, event) => {
+              return context.cart
+              .map(product => product.id === event.productId ? 
+                {...product, quantity: product.quantity - 1} : 
+                product)
+              .filter(product => product.quantity !== 0);
             }
           }),
+        },
+        ADD_DISCOUNT: {
+          actions: assign({
+            appliedDiscount: (context, event) => {
+              console.log('Add', event, availableDiscounts.find(discount => discount.code === event.code) ?? null)
+              return availableDiscounts.find(discount => discount.code === event.code) ?? null
+            }
+          })
         }
       }
     },
-    adressed: {},
-    shippingSelected: {},
-    shippingSkipped: {},
-    paymentSelected: {},
-    paymentSkipped: {},
     completed: {}
   }
 });
