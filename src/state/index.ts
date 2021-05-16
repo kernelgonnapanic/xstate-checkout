@@ -11,7 +11,10 @@ export interface CartItem {
 }
 
 interface Address {
+  firstName: string;
+  lastName: string;
   street: string;
+  postalCode: string;
   city: string;
 }
 
@@ -32,7 +35,9 @@ export type CheckoutEvents =
   | { type: "REMOVE_PRODUCT"; productId: string }
   | { type: "ADD_DISCOUNT"; code: string }
   | { type: "CHOOSE_SHIPPMENT"; methodType: ShippmentMethod["type"] }
-  | { type: "NEXT" };
+  | { type: "CART_COMPLETED" }
+  | { type: "ADDRESS_COMPLETED"; address: Address }
+  | { type: "SUCCESS" };
 
 const checkoutMachine = createMachine<CheckoutState, CheckoutEvents>({
   id: "checkout",
@@ -122,10 +127,22 @@ const checkoutMachine = createMachine<CheckoutState, CheckoutEvents>({
             },
           }),
         },
-        NEXT: { target: "address" },
+        CART_COMPLETED: { target: "address" },
       },
     },
-    address: {},
+    address: {
+      on: {
+        ADDRESS_COMPLETED: {
+          target: "payment",
+          actions: assign({
+            address: (context, event) => event.address,
+          }),
+        },
+      },
+    },
+    payment: {
+      on: { SUCCESS: { target: "completed" } },
+    },
     completed: {},
   },
 });

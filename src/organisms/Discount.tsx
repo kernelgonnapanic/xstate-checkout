@@ -1,6 +1,7 @@
 import { useService } from "@xstate/react";
 import React, { ChangeEvent, useContext, useState } from "react";
 import styled from "styled-components";
+import ErrorMessage from "../atoms/ErrorMessage";
 import { MachineContext } from "../MachineContext";
 import { availableDiscounts } from "../types/Discount";
 
@@ -13,15 +14,6 @@ const Input = styled.input`
 `;
 
 const Button = styled.button``;
-
-const ErrorMessage = styled.div`
-  color: #b22222;
-  padding: 5px 10px;
-  border: 1px solid #b22222;
-  margin: 10px 0;
-  border-radius: 3px;
-  background-color: #fce8e8;
-`;
 
 const Discount = (): JSX.Element => {
   const machine = useContext(MachineContext);

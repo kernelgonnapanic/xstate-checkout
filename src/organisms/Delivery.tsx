@@ -28,6 +28,7 @@ const Delivery = (): JSX.Element => {
               <input
                 type="radio"
                 name="shippment"
+                id={method.type}
                 value={method.type}
                 checked={shippment?.type === method.type}
                 onChange={() =>
