@@ -62,7 +62,7 @@ const AddressForm = (): JSX.Element => {
       />
       <Input
         value={street}
-        placeholder="Ulica, numer domu, mieszkania"
+        placeholder="Ulica"
         onChange={(event) => setStreet(event.target.value)}
       />
       <Input
