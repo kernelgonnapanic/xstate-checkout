@@ -14,12 +14,8 @@ const Cart = (): JSX.Element => {
   const machine = useContext(MachineContext);
   const [, send] = useService(machine);
 
-  const handleForwardNavigation = () => {
-    send("NEXT");
-  };
-
   const handleNextNavigation = () => {
-    send("NEXT");
+    send("CART_COMPLETED");
   };
 
   return (
@@ -31,9 +27,7 @@ const Cart = (): JSX.Element => {
       <Sum />
       <Row>
         <Name>
-          <NavigationButton to="/" onClick={handleForwardNavigation}>
-            {"<<"} Lista produktów{" "}
-          </NavigationButton>
+          <NavigationButton to="/">{"<<"} Lista produktów </NavigationButton>
         </Name>
         <Cell>
           <NavigationButton to="/address" onClick={handleNextNavigation}>
