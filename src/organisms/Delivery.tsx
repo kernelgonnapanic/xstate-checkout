@@ -32,7 +32,7 @@ const Delivery = (): JSX.Element => {
                 value={method.type}
                 checked={shippment?.type === method.type}
                 onChange={() =>
-                  send("CHOOSE_SHIPPMENT", { methodType: method.type })
+                  send("CHOOSE_SHIPMENT", { methodType: method.type })
                 }
               />
               {method.name}

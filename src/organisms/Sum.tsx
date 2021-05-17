@@ -7,7 +7,7 @@ import { getTotal } from "../state/selectors";
 import { displayPrice } from "../utils/money";
 
 const Summary = styled.h2`
-  border-bottom: 2px solid rgb(74, 42, 28);
+  border-bottom: 2px solid #a0816c;
   display: flex;
 `;
 

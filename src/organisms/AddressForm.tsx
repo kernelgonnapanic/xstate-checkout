@@ -4,7 +4,7 @@ import styled from "styled-components";
 import ErrorMessage from "../atoms/ErrorMessage";
 import Input from "../atoms/Input";
 import NavigationButton from "../atoms/NavigationButton";
-import { Cell, Name, Row } from "../atoms/Row";
+import { Name, Rest, Row } from "../atoms/Row";
 import { MachineContext } from "../MachineContext";
 
 const Form = styled.form`
@@ -26,9 +26,7 @@ const AddressForm = (): JSX.Element => {
   const [error, setError] = useState<string | false>(false);
 
   const handleNextClick = () => {
-    console.log(isValid());
     if (!isValid()) {
-      console.log("error");
       setError("Proszę uzupełnić formularz adresu");
       return;
     }
@@ -80,11 +78,11 @@ const AddressForm = (): JSX.Element => {
         <Name>
           <NavigationButton to="/cart">{"<<"} Koszyk </NavigationButton>
         </Name>
-        <Cell>
+        <Rest>
           <NavigationButton to="/payment" onClick={handleNextClick}>
             Płatność {">>"}
           </NavigationButton>
-        </Cell>
+        </Rest>
       </Row>
     </Form>
   );

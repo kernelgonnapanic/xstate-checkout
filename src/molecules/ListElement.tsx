@@ -12,8 +12,8 @@ interface ListElementProps {
 
 const Button = styled.button`
   border-radius: 50%;
-  border: 1px solid rgb(74, 42, 28);
-  color: rgb(74, 42, 28);
+  border: 1px solid #a0816c;
+  color: #a0816c;
   width: 25px;
   height: 25px;
   background-color: transparent;

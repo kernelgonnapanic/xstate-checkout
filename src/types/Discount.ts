@@ -5,11 +5,11 @@ export interface Discount {
 
 export const availableDiscounts: Discount[] = [
   {
-    code: "Maj20",
+    code: "MAJ_20",
     percentage: 20,
   },
   {
-    code: "WielkaPromocja",
-    percentage: 40,
+    code: "DLA_NAJLEPSZYCH",
+    percentage: 13,
   },
 ];

@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { MachineContext } from "../MachineContext";
 import ListHeader from "../atoms/ListHeader";
 import NavigationButton from "../atoms/NavigationButton";
-import { Cell, Name, Row } from "../atoms/Row";
+import { Rest, Name, Row } from "../atoms/Row";
 import CartList from "../organisms/CartList";
 import Delivery from "../organisms/Delivery";
 import Discount from "../organisms/Discount";
@@ -29,11 +29,11 @@ const Cart = (): JSX.Element => {
         <Name>
           <NavigationButton to="/">{"<<"} Lista produktów </NavigationButton>
         </Name>
-        <Cell>
+        <Rest>
           <NavigationButton to="/address" onClick={handleNextNavigation}>
             Adres {">>"}
           </NavigationButton>
-        </Cell>
+        </Rest>
       </Row>
     </Container>
   );

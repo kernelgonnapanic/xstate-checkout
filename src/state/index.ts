@@ -34,7 +34,7 @@ export type CheckoutEvents =
   | { type: "ADD_PRODUCT"; productId: string }
   | { type: "REMOVE_PRODUCT"; productId: string }
   | { type: "ADD_DISCOUNT"; code: string }
-  | { type: "CHOOSE_SHIPPMENT"; methodType: ShippmentMethod["type"] }
+  | { type: "CHOOSE_SHIPMENT"; methodType: ShippmentMethod["type"] }
   | { type: "CART_COMPLETED" }
   | { type: "ADDRESS_COMPLETED"; address: Address }
   | { type: "SUCCESS" };
@@ -116,7 +116,7 @@ const checkoutMachine = createMachine<CheckoutState, CheckoutEvents>({
             },
           }),
         },
-        CHOOSE_SHIPPMENT: {
+        CHOOSE_SHIPMENT: {
           actions: assign({
             shippmentMethod: (context, event) => {
               return (
