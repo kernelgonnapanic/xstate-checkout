@@ -1,7 +1,7 @@
 {
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": "./tsconfig.json"
+    "project": "./tsconfig.eslint.json"
   },
   "extends": [
     "airbnb-typescript",
@@ -10,17 +10,13 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended"
   ],
-  "plugins": ["@typescript-eslint", "react", "prettier"],
+  "plugins": ["@typescript-eslint", "react", "prettier", "cypress"],
   "rules": {
     "@typescript-eslint/ban-ts-comment": "off",
     "import/no-extraneous-dependencies": [
       "error",
       {
-        "devDependencies": [
-          "**/*.test.ts",
-          "**/*.test.tsx",
-          "**/*.spec.ts"
-        ]
+        "devDependencies": ["**/*.test.ts", "**/*.test.tsx", "**/*.spec.ts"]
       }
     ],
     "import/no-unused-modules": [1, { "unusedExports": true }],
@@ -48,6 +44,7 @@
   },
   "env": {
     "node": true,
-    "jest": true
+    "jest": true,
+    "cypress/globals": true
   }
 }

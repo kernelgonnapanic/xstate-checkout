@@ -23,13 +23,16 @@ const Discount = (): JSX.Element => {
   const [code, setCode] = useState("");
 
   const handleAddDiscount = () => {
+    const formattedCode = code.toUpperCase();
     if (
       code !== "" &&
-      !availableDiscounts.map((discount) => discount.code).includes(code)
+      !availableDiscounts
+        .map((discount) => discount.code)
+        .includes(formattedCode)
     ) {
       setError("Kod rabatowy jest nieprawidłowy");
     }
-    send("ADD_DISCOUNT", { code });
+    send("ADD_DISCOUNT", { code: formattedCode });
   };
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {

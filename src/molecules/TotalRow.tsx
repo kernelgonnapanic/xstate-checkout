@@ -7,20 +7,20 @@ import { getTotal } from "../state/selectors";
 import { displayPrice } from "../utils/money";
 
 const Summary = styled.h2`
-  border-bottom: 2px solid rgb(74, 42, 28);
+  border-bottom: 2px solid #a0816c;
   display: flex;
 `;
 
-const Sum = (): JSX.Element => {
+const TotalRow = (): JSX.Element => {
   const machine = useContext(MachineContext);
   const total = useSelector(machine, getTotal);
 
   return (
     <Summary>
-      <Name>Suma: </Name>
+      <Name>Do zapłaty: </Name>
       <Cell>{displayPrice(total)}</Cell>
     </Summary>
   );
 };
 
-export default Sum;
+export default TotalRow;

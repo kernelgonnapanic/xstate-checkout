@@ -19,7 +19,7 @@ const Summary = (): JSX.Element => {
   useEffect(() => {
     setTimeout(() => {
       setSuccess(true);
-    }, Math.random() * (5000 - 2000) + 2000);
+    }, Math.random() * (3000 - 500) + 500);
   }, []);
 
   return (

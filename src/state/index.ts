@@ -1,7 +1,8 @@
 import { assign, createMachine } from "xstate";
 import { findProductById } from "../mocks/getProducts";
+import { Address } from "../types/Address";
 import { availableDiscounts, Discount } from "../types/Discount";
-import { shippmentMethods, ShippmentMethod } from "../types/ShippmentMethod";
+import { shipmentMethods, ShipmentMethod } from "../types/ShipmentMethod";
 
 export interface CartItem {
   id: string;
@@ -10,20 +11,12 @@ export interface CartItem {
   quantity: number;
 }
 
-interface Address {
-  firstName: string;
-  lastName: string;
-  street: string;
-  postalCode: string;
-  city: string;
-}
-
 type PaymentMethod = "creditCard" | "GooglePay" | "test";
 
 export interface CheckoutState {
   cart: CartItem[];
   address: Address | null;
-  shippmentMethod: ShippmentMethod | null;
+  shipmentMethod: ShipmentMethod | null;
   paymentMethod: PaymentMethod | null;
   appliedDiscount: Discount | null;
 }
@@ -34,10 +27,11 @@ export type CheckoutEvents =
   | { type: "ADD_PRODUCT"; productId: string }
   | { type: "REMOVE_PRODUCT"; productId: string }
   | { type: "ADD_DISCOUNT"; code: string }
-  | { type: "CHOOSE_SHIPPMENT"; methodType: ShippmentMethod["type"] }
+  | { type: "CHOOSE_SHIPMENT"; methodType: ShipmentMethod["type"] }
   | { type: "CART_COMPLETED" }
   | { type: "ADDRESS_COMPLETED"; address: Address }
-  | { type: "SUCCESS" };
+  | { type: "SUCCESS" }
+  | { type: "PREV" };
 
 const checkoutMachine = createMachine<CheckoutState, CheckoutEvents>({
   id: "checkout",
@@ -45,7 +39,7 @@ const checkoutMachine = createMachine<CheckoutState, CheckoutEvents>({
   context: {
     cart: [],
     address: null,
-    shippmentMethod: shippmentMethods[0],
+    shipmentMethod: shipmentMethods[0],
     paymentMethod: null,
     appliedDiscount: null,
   },
@@ -116,11 +110,11 @@ const checkoutMachine = createMachine<CheckoutState, CheckoutEvents>({
             },
           }),
         },
-        CHOOSE_SHIPPMENT: {
+        CHOOSE_SHIPMENT: {
           actions: assign({
-            shippmentMethod: (context, event) => {
+            shipmentMethod: (context, event) => {
               return (
-                shippmentMethods.find(
+                shipmentMethods.find(
                   (method) => method.type === event.methodType
                 ) ?? null
               );
@@ -132,6 +126,7 @@ const checkoutMachine = createMachine<CheckoutState, CheckoutEvents>({
     },
     address: {
       on: {
+        PREV: { target: "cart" },
         ADDRESS_COMPLETED: {
           target: "payment",
           actions: assign({
@@ -141,7 +136,7 @@ const checkoutMachine = createMachine<CheckoutState, CheckoutEvents>({
       },
     },
     payment: {
-      on: { SUCCESS: { target: "completed" } },
+      on: { PREV: { target: "address" }, SUCCESS: { target: "completed" } },
     },
     completed: {},
   },

@@ -3,11 +3,11 @@ import { useContext } from "react";
 import { MachineContext } from "../MachineContext";
 import ListHeader from "../atoms/ListHeader";
 import NavigationButton from "../atoms/NavigationButton";
-import { Cell, Name, Row } from "../atoms/Row";
+import { Rest, Name, Row } from "../atoms/Row";
 import CartList from "../organisms/CartList";
 import Delivery from "../organisms/Delivery";
 import Discount from "../organisms/Discount";
-import Sum from "../organisms/Sum";
+import TotalRow from "../molecules/TotalRow";
 import Container from "../templates/Container";
 
 const Cart = (): JSX.Element => {
@@ -24,16 +24,16 @@ const Cart = (): JSX.Element => {
       <CartList />
       <Discount />
       <Delivery />
-      <Sum />
+      <TotalRow />
       <Row>
         <Name>
           <NavigationButton to="/">{"<<"} Lista produktów </NavigationButton>
         </Name>
-        <Cell>
+        <Rest>
           <NavigationButton to="/address" onClick={handleNextNavigation}>
             Adres {">>"}
           </NavigationButton>
-        </Cell>
+        </Rest>
       </Row>
     </Container>
   );
