@@ -4,7 +4,13 @@ import styled from "styled-components";
 import ListHeader from "../atoms/ListHeader";
 import NavigationButton from "../atoms/NavigationButton";
 import { Cell, Name, Rest, Row } from "../atoms/Row";
+import { Subtitle } from "../atoms/Subtitle";
 import { MachineContext } from "../MachineContext";
+import AddressDisplay from "../molecules/AddressDisplay";
+import DeliveryRow from "../molecules/DeliveryRow";
+import DiscountRow from "../molecules/DiscountRow";
+import SumRow from "../molecules/SumRow";
+import TotalRow from "../molecules/TotalRow";
 import Container from "../templates/Container";
 import { displayPrice } from "../utils/money";
 
@@ -12,31 +18,13 @@ const CartSection = styled.div`
   display: flex;
   flex: 2;
   flex-direction: column;
-`;
-
-const AddressSection = styled.div`
-  display: flex;
-  flex: 1;
-`;
-
-const AddressBox = styled.div`
-  border: 3px solid #a0816c;
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  padding: 10px;
-`;
-
-const Subtitle = styled.h2`
-  margin: 0;
-  color: #a0816c;
-  font-size: 16px;
+  padding-right: 20px;
 `;
 
 const Payment = (): JSX.Element => {
   const machine = useContext(MachineContext);
   const [current, send] = useService(machine);
-  const { cart, address, appliedDiscount } = current.context;
+  const { cart, address } = current.context;
 
   return (
     <Container>
@@ -52,26 +40,12 @@ const Payment = (): JSX.Element => {
               <Cell>{displayPrice(product.price * product.quantity)}</Cell>
             </Row>
           ))}
-          <Subtitle>Suma:</Subtitle>
-          {appliedDiscount ? (
-            <Row>
-              <Name>Rabat: {appliedDiscount.code} </Name>
-              <Cell>-{}</Cell>
-            </Row>
-          ) : null}
+          <SumRow />
+          <DiscountRow />
+          <DeliveryRow />
+          <TotalRow />
         </CartSection>
-        <AddressSection>
-          <AddressBox>
-            <Subtitle>Adres dostawy:</Subtitle>
-            <div>
-              {address?.firstName} {address?.lastName}
-            </div>
-            <div>{address?.street}</div>
-            <div>
-              {address?.postalCode} {address?.city}
-            </div>
-          </AddressBox>
-        </AddressSection>
+        <AddressDisplay address={address} />
       </Row>
       <Row>
         <Rest>

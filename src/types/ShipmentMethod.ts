@@ -1,11 +1,11 @@
-export interface ShippmentMethod {
+export interface ShipmentMethod {
   type: string;
   price: number;
   name: string;
   freeFrom: number;
 }
 
-export const shippmentMethods: ShippmentMethod[] = [
+export const shipmentMethods: ShipmentMethod[] = [
   {
     type: "expressDelivery",
     name: "Dostawa ekspresowa (1-2 dni)",

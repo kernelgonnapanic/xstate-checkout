@@ -8,6 +8,8 @@ import { displayPrice } from "../utils/money";
 import { getDiscounts, getSum } from "../state/selectors";
 import { MachineContext } from "../MachineContext";
 import { CartItem } from "../state";
+import DiscountRow from "../molecules/DiscountRow";
+import SumRow from "../molecules/SumRow";
 
 const List = styled.section`
   padding-bottom: 10px;
@@ -27,10 +29,6 @@ const CartList = (): JSX.Element => {
   const [current, send] = useService(machine);
   const sum = useSelector(machine, getSum);
   const discountValue = useSelector(machine, getDiscounts);
-  const discount = useSelector(
-    machine,
-    (state) => state.context.appliedDiscount
-  );
   const { cart } = current.context;
 
   if (cart.length === 0) {
@@ -49,18 +47,8 @@ const CartList = (): JSX.Element => {
           />
         ))}
       </List>
-      <Row>
-        <Name>Suma:</Name>
-        <Cell>{displayPrice(sum)}</Cell>
-      </Row>
-      {discount ? (
-        <Row>
-          <Name>
-            Rabat: {discount?.code} (-{discount?.percentage}%)
-          </Name>
-          <Cell>-{displayPrice(discountValue)}</Cell>
-        </Row>
-      ) : null}
+      <SumRow />
+      <DiscountRow />
       <Row>
         <Name>Do zapłaty:</Name>
         <Cell>{displayPrice(sum - discountValue)}</Cell>

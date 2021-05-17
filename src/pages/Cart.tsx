@@ -7,7 +7,7 @@ import { Rest, Name, Row } from "../atoms/Row";
 import CartList from "../organisms/CartList";
 import Delivery from "../organisms/Delivery";
 import Discount from "../organisms/Discount";
-import Sum from "../organisms/Sum";
+import TotalRow from "../molecules/TotalRow";
 import Container from "../templates/Container";
 
 const Cart = (): JSX.Element => {
@@ -24,7 +24,7 @@ const Cart = (): JSX.Element => {
       <CartList />
       <Discount />
       <Delivery />
-      <Sum />
+      <TotalRow />
       <Row>
         <Name>
           <NavigationButton to="/">{"<<"} Lista produktów </NavigationButton>

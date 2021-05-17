@@ -25,6 +25,10 @@ const AddressForm = (): JSX.Element => {
   const [city, setCity] = useState(address?.city ?? "");
   const [error, setError] = useState<string | false>(false);
 
+  const handlePreviousClick = () => {
+    send("PREV");
+  };
+
   const handleNextClick = () => {
     if (!isValid()) {
       setError("Proszę uzupełnić formularz adresu");
@@ -76,7 +80,9 @@ const AddressForm = (): JSX.Element => {
       {error ? <ErrorMessage>{error}</ErrorMessage> : null}
       <Row>
         <Name>
-          <NavigationButton to="/cart">{"<<"} Koszyk </NavigationButton>
+          <NavigationButton to="/cart" onClick={handlePreviousClick}>
+            {"<<"} Koszyk{" "}
+          </NavigationButton>
         </Name>
         <Rest>
           <NavigationButton to="/payment" onClick={handleNextClick}>
