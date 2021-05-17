@@ -16,7 +16,7 @@ export const Header = () => {
   return (
     <Container onClick={() => history.push("/cart")}>
       <CartImage src={ShoppingCartImage} />
-      <span data-cy="cartSize">{cart.length}</span>
+      <span>{cart.length}</span>
     </Container>
   );
 };
