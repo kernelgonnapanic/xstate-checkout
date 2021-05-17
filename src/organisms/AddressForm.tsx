@@ -23,31 +23,15 @@ const AddressForm = (): JSX.Element => {
   const [street, setStreet] = useState(address?.street ?? "");
   const [postalCode, setPostalCode] = useState(address?.postalCode ?? "");
   const [city, setCity] = useState(address?.city ?? "");
-  const [error, setError] = useState<string | false>(false);
 
   const handlePreviousClick = () => {
     send("PREV");
   };
 
   const handleNextClick = () => {
-    if (!isValid()) {
-      setError("Proszę uzupełnić formularz adresu");
-      return;
-    }
     send("ADDRESS_COMPLETED", {
       address: { firstName, lastName, street, postalCode, city },
     });
-  };
-
-  const isValid = () => {
-    const isFilled =
-      firstName.length > 0 &&
-      lastName.length > 0 &&
-      street.length > 0 &&
-      postalCode.length > 0 &&
-      city.length > 0;
-
-    return isFilled;
   };
 
   return (
@@ -77,7 +61,6 @@ const AddressForm = (): JSX.Element => {
         placeholder="Miasto"
         onChange={(event) => setCity(event.target.value)}
       />
-      {error ? <ErrorMessage>{error}</ErrorMessage> : null}
       <Row>
         <Name>
           <NavigationButton to="/cart" onClick={handlePreviousClick}>

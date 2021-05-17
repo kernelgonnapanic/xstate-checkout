@@ -29,7 +29,9 @@ describe("Discounts", () => {
     cy.get("input[placeholder=Miasto]").type("The North");
     cy.contains("Płatność >>").click();
 
+    cy.contains("Do zapłaty").parent().contains("46.75zł");
     cy.contains("Zapłać").click();
+
     cy.contains("Płatność zakończona pomyślnie");
   });
 });
